@@ -9,9 +9,7 @@ GameObject::GameObject()
 
     collisionBoxDebug.setFillColor(sf::Color::Transparent);
     collisionBoxDebug.setOutlineColor(sf::Color::Red);
-    collisionBoxDebug.setOutlineThickness(1.f);
-
-
+    collisionBoxDebug.setOutlineThickness(3.f);
 }
 
 GameObject::~GameObject()
@@ -29,10 +27,44 @@ void GameObject::update(float dt)
 {
 }
 
+void GameObject::setCollisionBox(sf::Vector2f size)
+{
+    sf::Vector2f position = getPosition(); // Retrieve the current position
+    collisionBox = sf::FloatRect(position.x, position.y, size.x, size.y);
+    setDebugCollisionBox(position.x, position.y, size.x, size.y);
+}
+
+void GameObject::setCollisionBox(float width, float height)
+{
+    sf::Vector2f position = getPosition(); // Retrieve the current position
+    collisionBox = sf::FloatRect(position.x, position.y, width, height);
+    setDebugCollisionBox(position.x, position.y, width, width);
+}
+
 void GameObject::updateCollisionBox(float dt)
 {
-    collisionBox = sf::FloatRect(getPosition().x, getPosition().y, getSize().x, getSize().y);
-    setDebugCollisionBox(getPosition().x, getPosition().y, getSize().x, getSize().y);
+    // Cache position and size of the GameObject to minimize redundant calls
+    sf::Vector2f position = getPosition();
+    sf::Vector2f size = getSize();
+
+    // Check if the GameObject is a tile
+    if (getTile())
+    {
+        // Set collisionBox for tiles directly using position and size
+        collisionBox = sf::FloatRect(position.x, position.y, size.x, size.y);
+    }
+    else
+    {
+        // For non-tile objects, adjust only the position
+        // Width and height remain unchanged
+        collisionBox.left = position.x;
+        collisionBox.top = position.y;
+    }
+
+    // Set the debug collision box to visualize it (useful for debugging)
+    // The collision box dimensions are consistent regardless of the object type
+
+    setDebugCollisionBox(collisionBox.left, collisionBox.top, collisionBox.width, collisionBox.height);
 }
 
 // Sets the velocity of the sprite

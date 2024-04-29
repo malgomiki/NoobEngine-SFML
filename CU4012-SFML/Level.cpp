@@ -8,6 +8,10 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs,sf::View* v, World
 	world = w;	
 	tileManager = tm;
 	audioManager = new AudioManager();
+
+	player.setInput(input);
+
+	world->AddGameObject(player);
 }
 
 Level::~Level()
@@ -36,6 +40,7 @@ void Level::handleInput(float dt)
 		input->setKeyUp(sf::Keyboard::Tab);
 		gameState->setCurrentState(State::TILEEDITOR);
 	}
+	player.handleInput(dt);
 }
 
 // Update game objects
@@ -54,10 +59,17 @@ void Level::update(float dt)
 // Render level
 void Level::render()
 {
-	if (gameState->getCurrentState() == State::LEVEL)
+	if (gameState->getCurrentState() == State::TILEEDITOR)
+	{
+		//Draw debug collision boxes for all the gameObjects added to the level 
+		window->draw(player.getDebugCollisionBox());
+	}
+	else
 	{
 		tileManager->render(false);
 	}
+
+	window->draw(player);
 
 }
 

@@ -87,24 +87,9 @@ public:
 	std::string getTextureName() const { return textureName; }
 
 protected:
-	// Collision functions
-	void setCollisionBox(float x, float y, float width, float height)
-	{
-		collisionBox = sf::FloatRect(x, y, width, height);
-		setDebugCollisionBox(x, y, width, height);
-	};
-	void setCollisionBox(sf::Vector2f pos, sf::Vector2f size)
-	{
-		collisionBox = sf::FloatRect(pos.x, pos.y, size.x, size.y);
-		setDebugCollisionBox(pos.x, pos.y, size.x, size.y);
-
-	}
-	void setCollisionBox(sf::FloatRect fr)
-	{
-		collisionBox = fr;
-		setDebugCollisionBox(fr.left, fr.top, fr.width, fr.height);
-	};
-
+	// setup Collision box functions
+	void setCollisionBox(sf::Vector2f size);
+	void setCollisionBox(float width, float height);
 	void updateCollisionBox(float dt);
 	float restitution = 1;
 
