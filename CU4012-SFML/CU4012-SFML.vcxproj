@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)imgui;$(ProjectDir)/SFML/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Candle;$(ProjectDir)imgui;$(ProjectDir)/SFML/include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -135,6 +135,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Candle\Color.cpp" />
+    <ClCompile Include="Candle\Constants.cpp" />
+    <ClCompile Include="Candle\DirectedLight.cpp" />
+    <ClCompile Include="Candle\LightingArea.cpp" />
+    <ClCompile Include="Candle\LightSource.cpp" />
+    <ClCompile Include="Candle\Line.cpp" />
+    <ClCompile Include="Candle\Polygon.cpp" />
+    <ClCompile Include="Candle\RadialLight.cpp" />
+    <ClCompile Include="Candle\VertexArray.cpp" />
     <ClCompile Include="Framework\Animation.cpp" />
     <ClCompile Include="Framework\AudioManager.cpp" />
     <ClCompile Include="Framework\BaseLevel.cpp" />
@@ -159,6 +168,17 @@
     <ClCompile Include="TileEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Candle\Candle.hpp" />
+    <ClInclude Include="Candle\Color.hpp" />
+    <ClInclude Include="Candle\Constants.hpp" />
+    <ClInclude Include="Candle\DirectedLight.hpp" />
+    <ClInclude Include="Candle\LightingArea.hpp" />
+    <ClInclude Include="Candle\LightSource.hpp" />
+    <ClInclude Include="Candle\Line.hpp" />
+    <ClInclude Include="Candle\Polygon.hpp" />
+    <ClInclude Include="Candle\RadialLight.hpp" />
+    <ClInclude Include="Candle\Vector2.hpp" />
+    <ClInclude Include="Candle\VertexArray.hpp" />
     <ClInclude Include="Framework\Animation.h" />
     <ClInclude Include="Framework\AudioManager.h" />
     <ClInclude Include="Framework\BaseLevel.h" />

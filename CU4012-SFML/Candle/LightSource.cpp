@@ -1,11 +1,11 @@
-#include "Candle/LightSource.hpp"
+#include "LightSource.hpp"
 
 #include <algorithm>
 
-#include "Candle/Constants.hpp"
-#include "Candle/geometry/Line.hpp"
-#include "Candle/geometry/Vector2.hpp"
-#include "Candle/graphics/VertexArray.hpp"
+#include "Constants.hpp"
+#include "Line.hpp"
+#include "Vector2.hpp"
+#include "VertexArray.hpp"
 
 namespace candle{
     LightSource::LightSource()

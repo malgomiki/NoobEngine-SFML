@@ -7,7 +7,7 @@
 #ifndef __CANDLE_RADIAL_LIGHT_HPP__
 #define __CANDLE_RADIAL_LIGHT_HPP__
 
-#include "Candle/LightSource.hpp"
+#include "LightSource.hpp"
 
 namespace candle{
     /**

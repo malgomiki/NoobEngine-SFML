@@ -11,7 +11,7 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include "Candle/Constants.hpp"
+#include "Constants.hpp"
 
 namespace sfu{
     /**

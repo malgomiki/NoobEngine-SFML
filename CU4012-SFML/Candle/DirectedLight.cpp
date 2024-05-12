@@ -1,10 +1,10 @@
-#include "Candle/DirectedLight.hpp"
+#include "DirectedLight.hpp"
 
 #include <queue>
 
-#include "Candle/geometry/Vector2.hpp"
-#include "Candle/geometry/Line.hpp"
-#include "Candle/graphics/VertexArray.hpp"
+#include "Vector2.hpp"
+#include "Line.hpp"
+#include "VertexArray.hpp"
 
 namespace candle{
     void DirectedLight::draw(sf::RenderTarget& t, sf::RenderStates st) const{

@@ -12,7 +12,7 @@
 
 #include "SFML/Graphics.hpp"
 
-#include "Candle/geometry/Line.hpp"
+#include "Line.hpp"
 
 namespace candle{
     /**

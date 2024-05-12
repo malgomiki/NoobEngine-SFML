@@ -1,4 +1,4 @@
-#include "Candle/geometry/Polygon.hpp"
+#include "Polygon.hpp"
 
 namespace sfu{
 

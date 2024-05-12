@@ -19,6 +19,9 @@
     <Filter Include="Framework\ImGui">
       <UniqueIdentifier>{64340020-abfa-4a8b-b9cb-857ee7d9a9dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Candle">
+      <UniqueIdentifier>{54115be1-b09e-4b00-8f3c-6d382e10bac0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -86,6 +89,33 @@
     </ClCompile>
     <ClCompile Include="imgui\imgui-SFML.cpp">
       <Filter>Framework\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Candle\Color.cpp">
+      <Filter>Framework\Candle</Filter>
+    </ClCompile>
+    <ClCompile Include="Candle\Constants.cpp">
+      <Filter>Framework\Candle</Filter>
+    </ClCompile>
+    <ClCompile Include="Candle\DirectedLight.cpp">
+      <Filter>Framework\Candle</Filter>
+    </ClCompile>
+    <ClCompile Include="Candle\LightingArea.cpp">
+      <Filter>Framework\Candle</Filter>
+    </ClCompile>
+    <ClCompile Include="Candle\LightSource.cpp">
+      <Filter>Framework\Candle</Filter>
+    </ClCompile>
+    <ClCompile Include="Candle\Line.cpp">
+      <Filter>Framework\Candle</Filter>
+    </ClCompile>
+    <ClCompile Include="Candle\Polygon.cpp">
+      <Filter>Framework\Candle</Filter>
+    </ClCompile>
+    <ClCompile Include="Candle\RadialLight.cpp">
+      <Filter>Framework\Candle</Filter>
+    </ClCompile>
+    <ClCompile Include="Candle\VertexArray.cpp">
+      <Filter>Framework\Candle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +205,39 @@
     </ClInclude>
     <ClInclude Include="Framework\TextureManager.h">
       <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle\Candle.hpp">
+      <Filter>Framework\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle\Color.hpp">
+      <Filter>Framework\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle\Constants.hpp">
+      <Filter>Framework\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle\DirectedLight.hpp">
+      <Filter>Framework\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle\LightingArea.hpp">
+      <Filter>Framework\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle\LightSource.hpp">
+      <Filter>Framework\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle\Line.hpp">
+      <Filter>Framework\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle\Polygon.hpp">
+      <Filter>Framework\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle\RadialLight.hpp">
+      <Filter>Framework\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle\Vector2.hpp">
+      <Filter>Framework\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle\VertexArray.hpp">
+      <Filter>Framework\Candle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

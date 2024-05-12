@@ -11,8 +11,8 @@
 
 #include "SFML/Graphics.hpp"
 
-#include "Candle/geometry/Line.hpp"
-#include "Candle/LightSource.hpp"
+#include "Line.hpp"
+#include "LightSource.hpp"
 
 namespace candle{
     /**

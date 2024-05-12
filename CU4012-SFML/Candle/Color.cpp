@@ -1,4 +1,4 @@
-#include "Candle/graphics/Color.hpp"
+#include "Color.hpp"
 
 namespace sfu{
     sf::Color darken(const sf::Color& c, float r){

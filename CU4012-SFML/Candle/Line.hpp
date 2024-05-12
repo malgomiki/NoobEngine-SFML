@@ -12,8 +12,8 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
-#include "Candle/geometry/Vector2.hpp"
-#include "Candle/Constants.hpp"
+#include "Vector2.hpp"
+#include "Constants.hpp"
 
 namespace sfu{
     /**

@@ -1,5 +1,5 @@
-#include "Candle/graphics/VertexArray.hpp"
-#include "Candle/graphics/Color.hpp"
+#include "VertexArray.hpp"
+#include "Color.hpp"
 
 namespace sfu{
     void setColor(sf::VertexArray& va, const sf::Color& color){

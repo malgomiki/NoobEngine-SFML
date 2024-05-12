@@ -1,5 +1,5 @@
-#include "Candle/LightingArea.hpp"
-#include "Candle/graphics/VertexArray.hpp"
+#include "LightingArea.hpp"
+#include "VertexArray.hpp"
 
 
 namespace candle{

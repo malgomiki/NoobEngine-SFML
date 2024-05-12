@@ -3,13 +3,13 @@
 #endif
 
 #include <memory>
-#include "Candle/RadialLight.hpp"
+#include "RadialLight.hpp"
 
 #include "SFML/Graphics.hpp"
 
-#include "Candle/graphics/VertexArray.hpp"
-#include "Candle/geometry/Vector2.hpp"
-#include "Candle/geometry/Line.hpp"
+#include "VertexArray.hpp"
+#include "Vector2.hpp"
+#include "Line.hpp"
 
 namespace candle{
     int RadialLight::s_instanceCount = 0;
