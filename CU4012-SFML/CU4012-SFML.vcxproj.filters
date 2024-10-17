@@ -117,6 +117,9 @@
     <ClCompile Include="Candle\VertexArray.cpp">
       <Filter>Framework\Candle</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\LightTile.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Level.h">
@@ -238,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="Candle\VertexArray.hpp">
       <Filter>Framework\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\LightTile.h">
+      <Filter>Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

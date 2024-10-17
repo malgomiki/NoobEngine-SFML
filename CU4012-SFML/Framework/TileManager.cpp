@@ -353,30 +353,51 @@ void TileManager::DrawImGui() {
 
         if (ImGui::BeginTabBar("Tile Editor Tabs")) {
             if (ImGui::BeginTabItem("Tiles")) {
-                // Tiles List
-                if (ImGui::BeginListBox("Tile List")) {
-                    for (int i = 0; i < tiles.size(); i++) {
-                        std::string item_label = tiles[i]->getTag().empty() ? "Tile" + std::to_string(i) : tiles[i]->getTag();
-                        item_label += "##" + std::to_string(i);
+                // Tiles List inside a ListBox with collapsible groups
+                if (ImGui::BeginListBox("Tile List", ImVec2(200, 300))) {
 
-                        bool isSelected = selectedTileIndices.find(i) != selectedTileIndices.end();
-                        if (ImGui::Selectable(item_label.c_str(), isSelected)) {
-                            if (ImGui::GetIO().KeyCtrl) {
-                                // Toggle selection with Ctrl pressed
-                                if (isSelected) {
-                                    selectedTileIndices.erase(i);
-                                }
-                                else {
-                                    selectedTileIndices.insert(i);
+
+                    // Step 1: Create a map to store tiles by their tags
+                    std::map<std::string, std::vector<int>> tilesByTag;
+
+                    for (int i = 0; i < tiles.size(); i++) {
+                        std::string tag =  tiles[i]->getTag();
+                        tilesByTag[tag].push_back(i);
+                    }
+
+                    // Step 2: Iterate over each tag group and create a collapsible section
+                    for (auto& group : tilesByTag) {
+                        const std::string& tag = group.first;
+                        const std::vector<int>& tileIndices = group.second;
+
+                        // Simulate a collapsible header using TreeNode
+                        if (ImGui::TreeNodeEx(tag.c_str(), ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_DefaultOpen)) {
+                            // Step 3: List the tiles under the collapsible section
+                            for (int idx : tileIndices) {
+                                std::string item_label = "Tile " + std::to_string(idx) + "##" + std::to_string(idx);
+
+                                bool isSelected = selectedTileIndices.find(idx) != selectedTileIndices.end();
+                                if (ImGui::Selectable(item_label.c_str(), isSelected)) {
+                                    if (ImGui::GetIO().KeyCtrl) {
+                                        // Toggle selection with Ctrl pressed
+                                        if (isSelected) {
+                                            selectedTileIndices.erase(idx);
+                                        }
+                                        else {
+                                            selectedTileIndices.insert(idx);
+                                        }
+                                    }
+                                    else {
+                                        // Single selection
+                                        selectedTileIndices.clear();
+                                        selectedTileIndices.insert(idx);
+                                    }
                                 }
                             }
-                            else {
-                                // Single selection
-                                selectedTileIndices.clear();
-                                selectedTileIndices.insert(i);
-                            }
+                            ImGui::TreePop();  // Close the group after listing its tiles
                         }
                     }
+
                     ImGui::EndListBox();
                 }
 

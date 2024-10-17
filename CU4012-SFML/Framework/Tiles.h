@@ -3,6 +3,7 @@
 class Tiles :
     public GameObject
 {
+protected:
     bool editing; // To track editing mode
 public:
     Tiles();
