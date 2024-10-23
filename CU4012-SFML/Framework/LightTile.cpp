@@ -8,10 +8,17 @@ LightTile::LightTile(float range)
     setSize(sf::Vector2f(50, 50));  // Size of the light tile
 }
 
-void LightTile::setPosition(const sf::Vector2f& position)
+void LightTile::setPosition(sf::Vector2f& position)
 {
     Tiles::setPosition(position);   // Set the position of the tile itself
     light.setPosition(position);    // Set the position of the light source
+}
+
+void LightTile::setPosition(float x, float y)
+{
+
+    Tiles::setPosition(sf::Vector2f(x,y));   // Set the position of the tile itself
+    light.setPosition(sf::Vector2f(x, y));    // Set the position of the light source
 }
 
 candle::RadialLight& LightTile::getLight()

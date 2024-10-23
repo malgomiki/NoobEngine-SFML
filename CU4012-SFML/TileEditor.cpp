@@ -143,6 +143,8 @@ void TileEditor::moveView(float dt)
 			view->zoom(0.9995f);
 		}
 	}
+
+
 	// Handle mouse wheel zoom inputs
 	int wheelDelta = input->getMouseWheelDelta();
 	if (wheelDelta != 0) {
@@ -224,9 +226,4 @@ int main() {
 	}
 	return 0;
 }
-
-
-
-
-
 */

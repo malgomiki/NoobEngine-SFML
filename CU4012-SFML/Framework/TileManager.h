@@ -3,6 +3,7 @@
 #include "World.h"
 #include "Tiles.h"
 #include "TextureManager.h"
+#include "LightTile.h"
 #include <fstream>
 #include <vector>
 #include <string>
@@ -18,6 +19,7 @@ class TileManager : public GameObject
     //std::vector<Tiles> tiles;
 
     std::vector<std::unique_ptr<Tiles>> tiles;
+    std::vector<std::unique_ptr<LightTile>> lights;
     
     TextureManager textureManager;
 
@@ -36,6 +38,11 @@ class TileManager : public GameObject
 
 public:
     TileManager();
+
+    //Lights 
+    void addLight();
+    void renderFog();
+    void renderLight();
 
     void update(float dt) override;
     void handleInput(float dt) override;
@@ -68,5 +75,7 @@ public:
     void displayTileProperties(Tiles& tile);
     void displayCheckBox(const char* label, bool& value);
     void addNewTile();
+
+
     void deleteSelectedTiles();
 };

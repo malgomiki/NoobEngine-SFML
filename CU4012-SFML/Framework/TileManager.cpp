@@ -157,6 +157,8 @@ void TileManager::handleInput(float dt)
         input->setKeyUp(sf::Keyboard::Delete); // Prevent continuous deletion while the key is held down
     }
 }
+
+
 void TileManager::update(float dt)
 {
     for (auto& tilePtr : tiles) {
@@ -186,6 +188,20 @@ void TileManager::render(bool editMode) {
             if(!tilePtr->getTexture()==NULL) window->draw(*tilePtr); // Draw the tile
         }
     }
+
+    for (auto& lightPtr : lights)
+    {
+
+    }
+}
+
+void TileManager::renderFog()
+{
+
+}
+
+void TileManager::renderLight()
+{
 }
 
 
@@ -475,6 +491,9 @@ void TileManager::DrawImGui() {
                     saveTiles(tiles, filePath);
                 }
 
+                if (ImGui::Button("Add Light")) {
+                    addLight();
+                }
 
                 ImGui::EndTabItem();
 
@@ -677,6 +696,15 @@ void TileManager::addNewTile() {
     selectedTileIndices.clear();
     selectedTileIndices.insert(tiles.size() - 1);
 }
+
+void TileManager::addLight()
+{
+    auto newLight = std::make_unique<LightTile>();
+    newLight->setPosition(0, 0);
+    lights.push_back(std::move(newLight));
+}
+
+
 
 void TileManager::deleteSelectedTiles() {
     std::vector<int> sortedIndices(selectedTileIndices.begin(), selectedTileIndices.end());
