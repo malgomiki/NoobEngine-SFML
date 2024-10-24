@@ -53,6 +53,8 @@ public:
 
     std::vector<std::unique_ptr<Tiles>>& getTiles();
 
+    std::vector<std::unique_ptr<LightTile>>& getLightTiles();
+
     void setWorld(World* world) { this->world = world; }
     void setView(sf::View* view) { this->view = view; }
 

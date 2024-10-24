@@ -189,10 +189,7 @@ void TileManager::render(bool editMode) {
         }
     }
 
-    for (auto& lightPtr : lights)
-    {
 
-    }
 }
 
 void TileManager::renderFog()
@@ -295,6 +292,11 @@ std::vector<std::unique_ptr<Tiles>>& TileManager::getTiles() {
     return tiles;
 }
 
+std::vector<std::unique_ptr<LightTile>>& TileManager::getLightTiles()
+{
+    return lights;
+}
+
 void TileManager::RemoveCollectable()
 {
     auto newEnd = std::remove_if(tiles.begin(), tiles.end(),
@@ -386,31 +388,59 @@ void TileManager::DrawImGui() {
                         const std::string& tag = group.first;
                         const std::vector<int>& tileIndices = group.second;
 
-                        // Simulate a collapsible header using TreeNode
-                        if (ImGui::TreeNodeEx(tag.c_str(), ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_DefaultOpen)) {
-                            // Step 3: List the tiles under the collapsible section
-                            for (int idx : tileIndices) {
-                                std::string item_label = "Tile " + std::to_string(idx) + "##" + std::to_string(idx);
+                        if (tag.empty()) {
+                            if (ImGui::TreeNodeEx("##emptyTag", ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_DefaultOpen)) {
+                                // List the tiles under the collapsible section
+                                for (int idx : tileIndices) {
+                                    std::string item_label = "Tile " + std::to_string(idx) + "##" + std::to_string(idx);
 
-                                bool isSelected = selectedTileIndices.find(idx) != selectedTileIndices.end();
-                                if (ImGui::Selectable(item_label.c_str(), isSelected)) {
-                                    if (ImGui::GetIO().KeyCtrl) {
-                                        // Toggle selection with Ctrl pressed
-                                        if (isSelected) {
-                                            selectedTileIndices.erase(idx);
+                                    bool isSelected = selectedTileIndices.find(idx) != selectedTileIndices.end();
+                                    if (ImGui::Selectable(item_label.c_str(), isSelected)) {
+                                        if (ImGui::GetIO().KeyCtrl) {
+                                            // Toggle selection with Ctrl pressed
+                                            if (isSelected) {
+                                                selectedTileIndices.erase(idx);
+                                            }
+                                            else {
+                                                selectedTileIndices.insert(idx);
+                                            }
                                         }
                                         else {
+                                            // Single selection
+                                            selectedTileIndices.clear();
                                             selectedTileIndices.insert(idx);
                                         }
                                     }
-                                    else {
-                                        // Single selection
-                                        selectedTileIndices.clear();
-                                        selectedTileIndices.insert(idx);
+                                }
+                                ImGui::TreePop();  // Close the group after listing its tiles
+                            }
+                        }
+                        else {
+                            if (ImGui::TreeNodeEx(tag.c_str(), ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_DefaultOpen)) {
+                                // List the tiles under the collapsible section
+                                for (int idx : tileIndices) {
+                                    std::string item_label = "Tile " + std::to_string(idx) + "##" + std::to_string(idx);
+
+                                    bool isSelected = selectedTileIndices.find(idx) != selectedTileIndices.end();
+                                    if (ImGui::Selectable(item_label.c_str(), isSelected)) {
+                                        if (ImGui::GetIO().KeyCtrl) {
+                                            // Toggle selection with Ctrl pressed
+                                            if (isSelected) {
+                                                selectedTileIndices.erase(idx);
+                                            }
+                                            else {
+                                                selectedTileIndices.insert(idx);
+                                            }
+                                        }
+                                        else {
+                                            // Single selection
+                                            selectedTileIndices.clear();
+                                            selectedTileIndices.insert(idx);
+                                        }
                                     }
                                 }
+                                ImGui::TreePop();  // Close the group after listing its tiles
                             }
-                            ImGui::TreePop();  // Close the group after listing its tiles
                         }
                     }
 

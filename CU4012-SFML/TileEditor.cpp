@@ -76,6 +76,7 @@ void TileEditor::render()
 	tileManager->render(true);
 
 	tileManager->DrawImGui();
+	
 
 }
 
