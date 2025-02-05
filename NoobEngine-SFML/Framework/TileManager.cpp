@@ -530,8 +530,8 @@ void TileManager::DrawImGui() {
                 
             }
 
-            if (ImGui::BeginTabItem("Tile Map")) {
-                ImGui::Text("Comming Soon........");
+            if (ImGui::BeginTabItem("Lights")) {
+                ImGui::Text("Work in Progress.....");
                 ImGui::EndTabItem();
             }
             ImGui::EndTabBar();
