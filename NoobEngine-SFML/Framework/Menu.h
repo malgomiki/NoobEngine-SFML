@@ -1,13 +1,13 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Framework/Input.h"
-#include "Framework/BaseLevel.h"
-#include "Framework/GameState.h"
-#include"Framework/Collision.h"
-#include "Framework/UI.h"
+#include "Input.h"
+#include "BaseLevel.h"
+#include "GameState.h"
+#include "Collision.h"
+#include "UI.h"
 #include <string>
 #include <iostream>
-#include"Level.h"
+#include "../Level.h"
 
 
 class Menu : public BaseLevel

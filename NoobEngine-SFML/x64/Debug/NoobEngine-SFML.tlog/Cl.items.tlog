@@ -15,8 +15,10 @@ C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Framework\GameO
 C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Framework\GameState.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\GameState.obj
 C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Framework\Input.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\Input.obj
 C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Framework\LightTile.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\LightTile.obj
+C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Framework\Menu.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\Menu.obj
 C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Framework\MusicObject.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\MusicObject.obj
 C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Framework\SoundObject.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\SoundObject.obj
+C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Framework\TileEditor.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\TileEditor.obj
 C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Framework\TileManager.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\TileManager.obj
 C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Framework\Tiles.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\Tiles.obj
 C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Framework\Vector.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\Vector.obj
@@ -28,5 +30,3 @@ C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\imgui\imgui_tab
 C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\imgui\imgui_widgets.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\imgui_widgets.obj
 C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Level.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\Level.obj
 C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Main.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\Main.obj
-C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\Menu.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\Menu.obj
-C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\TileEditor.cpp;C:\Users\yadavu\Documents\GitHub\NoobEngine-SFML\NoobEngine-SFML\x64\Debug\TileEditor.obj

@@ -1,5 +1,5 @@
 #include "Menu.h"
-#include "Framework/Utilities.h"
+#include "Utilities.h"
 Menu::Menu(sf::RenderWindow* hwnd, Input* in, GameState* game)
 {
 	window = hwnd;

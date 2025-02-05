@@ -153,8 +153,10 @@
     <ClCompile Include="Framework\GameState.cpp" />
     <ClCompile Include="Framework\Input.cpp" />
     <ClCompile Include="Framework\LightTile.cpp" />
+    <ClCompile Include="Framework\Menu.cpp" />
     <ClCompile Include="Framework\MusicObject.cpp" />
     <ClCompile Include="Framework\SoundObject.cpp" />
+    <ClCompile Include="Framework\TileEditor.cpp" />
     <ClCompile Include="Framework\TileManager.cpp" />
     <ClCompile Include="Framework\Tiles.cpp" />
     <ClCompile Include="Framework\Vector.cpp" />
@@ -166,8 +168,6 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="TileEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Candle\Candle.hpp" />
@@ -189,9 +189,11 @@
     <ClInclude Include="Framework\GameState.h" />
     <ClInclude Include="Framework\Input.h" />
     <ClInclude Include="Framework\LightTile.h" />
+    <ClInclude Include="Framework\Menu.h" />
     <ClInclude Include="Framework\MusicObject.h" />
     <ClInclude Include="Framework\SoundObject.h" />
     <ClInclude Include="Framework\TextureManager.h" />
+    <ClInclude Include="Framework\TileEditor.h" />
     <ClInclude Include="Framework\TileManager.h" />
     <ClInclude Include="Framework\TileMap.h" />
     <ClInclude Include="Framework\Tiles.h" />
@@ -209,8 +211,6 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Level.h" />
-    <ClInclude Include="Menu.h" />
-    <ClInclude Include="TileEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Framework\DO_NOT_EDIT.txt" />

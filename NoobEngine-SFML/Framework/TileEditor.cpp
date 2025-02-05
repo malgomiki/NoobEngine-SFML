@@ -1,7 +1,7 @@
 #include "TileEditor.h"
 #include "imgui.h"
 #include "imgui-SFML.h"
-#include "Framework/Utilities.h"
+#include "Utilities.h"
 
 TileEditor::TileEditor(sf::RenderWindow* hwnd, Input* in, GameState* game, sf::View* v, World* w, TileManager* tm)
 {
@@ -157,74 +157,3 @@ void TileEditor::moveView(float dt)
 	// Set the new view
 	window->setView(*view);
 }
-
-/*
-
-//version 0.2
-#include <SFML/Graphics.hpp>
-#include "Candle/RadialLight.hpp"
-#include "Candle/LightingArea.hpp"
-
-int main() {
-	// create window
-	sf::RenderWindow w(sf::VideoMode(1920, 1080), "app");
-
-	// create a light source
-	candle::RadialLight light;
-	light.setRange(1000);
-	light.setFade(true);
-
-
-	//Create a second light source
-	candle::RadialLight light1;
-	light1.setRange(1000);
-	light1.setFade(true);
-
-	// load the image
-	sf::Texture img1;
-	if (!img1.loadFromFile("gfx/MushroomTrans.png")) {
-		exit(1);
-	}
-	sf::Sprite background(img1);
-
-	// create the lighting area
-	candle::LightingArea fog(candle::LightingArea::FOG,
-		sf::Vector2f(0.f, 0.f),
-		sf::Vector2f(300.f, 379.f));
-	fog.setAreaColor(sf::Color::Black);
-
-	// create an edge pool
-	candle::EdgeVector edges;
-
-
-
-	// main loop
-	while (w.isOpen()) {
-		sf::Event e;
-		while (w.pollEvent(e)) {
-			if (e.type == sf::Event::Closed) {
-				w.close();
-			}
-			else if (e.type == sf::Event::MouseMoved) {
-				sf::Vector2f mp(sf::Mouse::getPosition(w));
-				light.setPosition(mp);
-			}
-			light1.setPosition(sf::Vector2f(0, 0));
-
-		}
-
-		fog.clear();
-		fog.draw(light1);
-		fog.draw(light);
-		fog.display();
-
-		w.clear();
-		w.draw(light1);
-		w.draw(light);
-		w.draw(background);
-		w.draw(fog);
-		w.display();
-	}
-	return 0;
-}
-*/

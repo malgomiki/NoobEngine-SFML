@@ -4,13 +4,18 @@
 #include "imgui-SFML.h"
 #include "Utilities.h"
 
-TileManager::TileManager()
+TileManager::TileManager() : fog(candle::LightingArea::FOG, sf::Vector2f(0.f, 0.f), sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT))
 {
+    fog.setAreaColor(sf::Color::Black);
+    fog.setAreaOpacity(0.9);
+
     filePath = "TilesData.txt";
     textureManager.loadTexturesFromDirectory("gfx/TileTextures");
     // Set up ImGui variables
     imguiWidth = SCREEN_WIDTH / 4;
     imguiHeight = SCREEN_HEIGHT;
+
+    iseditingLights = false;
 }
 
 void TileManager::handleInput(float dt)
@@ -18,143 +23,267 @@ void TileManager::handleInput(float dt)
     sf::Vector2i pixelPos = sf::Vector2i(input->getMouseX(), input->getMouseY());
     sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos, *view);
 
-    if (input->isLeftMouseDown()) {
-        bool tileClicked = false;
-        int clickedTileIndex = -1;
+    if (!iseditingLights)
+    {
+        if (input->isLeftMouseDown()) {
+            bool tileClicked = false;
+            int clickedTileIndex = -1;
 
-        // Check if any tile is clicked
-        for (int i = 0; i < tiles.size(); ++i) {
-            if (Collision::checkBoundingBox(tiles[i]->getCollisionBox(), sf::Vector2i(worldPos))) {
-                tileClicked = true;
-                clickedTileIndex = i;
-                break;
+            // Check if any tile is clicked
+            for (int i = 0; i < tiles.size(); ++i) {
+                if (Collision::checkBoundingBox(tiles[i]->getCollisionBox(), sf::Vector2i(worldPos))) {
+                    tileClicked = true;
+                    clickedTileIndex = i;
+                    break;
+                }
             }
-        }
 
-        if (tileClicked) {
-            if (input->isKeyDown(sf::Keyboard::LControl) || input->isKeyDown(sf::Keyboard::RControl)) {
-                // Ctrl is held, toggle the selection state of the tile
-                if (selectedTileIndices.find(clickedTileIndex) == selectedTileIndices.end()) {
-                    selectedTileIndices.insert(clickedTileIndex); // Add to selection
-                    tiles[clickedTileIndex]->setEditing(true);
+            if (tileClicked) {
+                if (input->isKeyDown(sf::Keyboard::LControl) || input->isKeyDown(sf::Keyboard::RControl)) {
+                    // Ctrl is held, toggle the selection state of the tile
+                    if (selectedTileIndices.find(clickedTileIndex) == selectedTileIndices.end()) {
+                        selectedTileIndices.insert(clickedTileIndex); // Add to selection
+                        tiles[clickedTileIndex]->setEditing(true);
+                    }
+                    else {
+                        selectedTileIndices.erase(clickedTileIndex); // Remove from selection
+                        tiles[clickedTileIndex]->setEditing(false);
+                    }
                 }
                 else {
-                    selectedTileIndices.erase(clickedTileIndex); // Remove from selection
-                    tiles[clickedTileIndex]->setEditing(false);
-                }
-            }
-            else {
-                // No Ctrl key, clear existing selections and select the new tile only
-                for (auto index : selectedTileIndices) {
-                    tiles[index]->setEditing(false); // Set all currently selected tiles to not editing
-                }
-                selectedTileIndices.clear();
-                selectedTileIndices.insert(clickedTileIndex);
-                tiles[clickedTileIndex]->setEditing(true);
-            }
-        }
-        else {
-            // Clicked on empty space
-            if (!(input->isKeyDown(sf::Keyboard::LControl) || input->isKeyDown(sf::Keyboard::RControl))) {
-                if (!selectedTileIndices.empty()) {
-                    // Clear all current selections
+                    // No Ctrl key, clear existing selections and select the new tile only
                     for (auto index : selectedTileIndices) {
                         tiles[index]->setEditing(false); // Set all currently selected tiles to not editing
                     }
                     selectedTileIndices.clear();
-                    // Set a flag or remember this state to know a clearing has just occurred
-                    //recentlyCleared = true;
-                }
-                else {
-                    // Create a new tile only if it was recently cleared and now clicking again on empty space
-                    auto newTile = std::make_unique<Tiles>();
-                    newTile->setPosition(worldPos.x, worldPos.y);
-                    world->AddGameObject(*newTile);
-                    tiles.push_back(std::move(newTile));
-                    int newIndex = tiles.size() - 1; // Get the index of the newly added tile
-                    selectedTileIndices.insert(newIndex); // Select the newly added tile
-                    tiles[newIndex]->setEditing(true);
-                    recentlyCleared = false; // Reset the flag
+                    selectedTileIndices.insert(clickedTileIndex);
+                    tiles[clickedTileIndex]->setEditing(true);
                 }
             }
             else {
-                // If Ctrl is held, only clear selection without adding a new tile
-                for (auto index : selectedTileIndices) {
-                    tiles[index]->setEditing(false); // Set all currently selected tiles to not editing
+                // Clicked on empty space
+                if (!(input->isKeyDown(sf::Keyboard::LControl) || input->isKeyDown(sf::Keyboard::RControl))) {
+                    if (!selectedTileIndices.empty()) {
+                        // Clear all current selections
+                        for (auto index : selectedTileIndices) {
+                            tiles[index]->setEditing(false); // Set all currently selected tiles to not editing
+                        }
+                        selectedTileIndices.clear();
+                        // Set a flag or remember this state to know a clearing has just occurred
+                        //recentlyCleared = true;
+                    }
+                    else {
+                        // Create a new tile only if it was recently cleared and now clicking again on empty space
+                        auto newTile = std::make_unique<Tiles>();
+                        newTile->setPosition(worldPos.x, worldPos.y);
+                        world->AddGameObject(*newTile);
+                        tiles.push_back(std::move(newTile));
+                        int newIndex = tiles.size() - 1; // Get the index of the newly added tile
+                        selectedTileIndices.insert(newIndex); // Select the newly added tile
+                        tiles[newIndex]->setEditing(true);
+                        recentlyCleared = false; // Reset the flag
+                    }
                 }
-                selectedTileIndices.clear();
-                //recentlyCleared = false; // Ensure the flag is reset even if Ctrl was held
+                else {
+                    // If Ctrl is held, only clear selection without adding a new tile
+                    for (auto index : selectedTileIndices) {
+                        tiles[index]->setEditing(false); // Set all currently selected tiles to not editing
+                    }
+                    selectedTileIndices.clear();
+                    //recentlyCleared = false; // Ensure the flag is reset even if Ctrl was held
+                }
+            }
+            input->setLeftMouse(Input::MouseState::UP); // Mark the mouse click as handled
+        }
+
+        // Handle input for the active tiles
+        for (int index : selectedTileIndices) {
+            tiles[index]->setInput(input);
+            tiles[index]->handleInput(dt);
+        }
+
+        // Update the color of the tiles based on selection and tag
+        for (int i = 0; i < tiles.size(); ++i) {
+            if (selectedTileIndices.find(i) != selectedTileIndices.end()) {
+                tiles[i]->setColor(sf::Color::Green); // Highlight selected tiles
+            }
+            else if (tiles[i]->getTag() == "Wall") {
+                tiles[i]->setColor(sf::Color::Blue);
+            }
+            else {
+                tiles[i]->setColor(sf::Color::Red);
             }
         }
-        input->setLeftMouse(Input::MouseState::UP); // Mark the mouse click as handled
-    }
 
-    // Handle input for the active tiles
-    for (int index : selectedTileIndices) {
-        tiles[index]->setInput(input);
-        tiles[index]->handleInput(dt);
-    }
+        // Additional functionality like duplication and deletion...
 
-    // Update the color of the tiles based on selection and tag
-    for (int i = 0; i < tiles.size(); ++i) {
-        if (selectedTileIndices.find(i) != selectedTileIndices.end()) {
-            tiles[i]->setColor(sf::Color::Green); // Highlight selected tiles
-        }
-        else if (tiles[i]->getTag() == "Wall") {
-            tiles[i]->setColor(sf::Color::Blue);
-        }
-        else {
-            tiles[i]->setColor(sf::Color::Red);
-        }
-    }
+        // Duplication
+        if (input->isKeyDown(sf::Keyboard::LControl) || input->isKeyDown(sf::Keyboard::RControl)) {
+            if (input->isKeyDown(sf::Keyboard::D)) {
+                // Duplicate all selected tiles
+                std::vector<std::unique_ptr<Tiles>> newTiles; // Temporarily store new tiles to avoid modifying the collection while iterating
+                for (int index : selectedTileIndices) {
+                    auto& tile = tiles[index];
+                    auto duplicatedTile = std::make_unique<Tiles>();
+                    duplicatedTile->setPosition(tile->getPosition());
+                    duplicatedTile->setSize(tile->getSize());
+                    duplicatedTile->setTag(tile->getTag());
+                    duplicatedTile->setTexture(tile->getTexture()); // Ensure this method exists and works correctly
+                    duplicatedTile->setTextureName(tile->getTextureName()); // Ensure this method exists and works correctly
+                    duplicatedTile->setTrigger(tile->getTrigger());
+                    duplicatedTile->setStatic(tile->getStatic());
+                    duplicatedTile->setMassless(tile->getMassless());
+                    newTiles.push_back(std::move(duplicatedTile));
+                }
 
-    // Additional functionality like duplication and deletion...
+                // Add new tiles to the main collection and select them
+                for (auto& newTile : newTiles) {
+                    world->AddGameObject(*newTile);
+                    int newIndex = tiles.size();
+                    tiles.push_back(std::move(newTile));
+                    //selectedTileIndices.insert(newIndex); // Select new tiles
+                }
 
-    // Duplication
-    if (input->isKeyDown(sf::Keyboard::LControl) || input->isKeyDown(sf::Keyboard::RControl)) {
-        if (input->isKeyDown(sf::Keyboard::D)) {
-            // Duplicate all selected tiles
-            std::vector<std::unique_ptr<Tiles>> newTiles; // Temporarily store new tiles to avoid modifying the collection while iterating
-            for (int index : selectedTileIndices) {
-                auto& tile = tiles[index];
-                auto duplicatedTile = std::make_unique<Tiles>();
-                duplicatedTile->setPosition(tile->getPosition());
-                duplicatedTile->setSize(tile->getSize());
-                duplicatedTile->setTag(tile->getTag());
-                duplicatedTile->setTexture(tile->getTexture()); // Ensure this method exists and works correctly
-                duplicatedTile->setTextureName(tile->getTextureName()); // Ensure this method exists and works correctly
-                duplicatedTile->setTrigger(tile->getTrigger());
-                duplicatedTile->setStatic(tile->getStatic());
-                duplicatedTile->setMassless(tile->getMassless());
-                newTiles.push_back(std::move(duplicatedTile));
-            }
-
-            // Add new tiles to the main collection and select them
-            for (auto& newTile : newTiles) {
-                world->AddGameObject(*newTile);
-                int newIndex = tiles.size();
-                tiles.push_back(std::move(newTile));
-                //selectedTileIndices.insert(newIndex); // Select new tiles
-            }
-
-            input->setKeyUp(sf::Keyboard::D); // Prevent continuous duplication while the key is held down
-        }
-    }
-
-    //Deletion
-    if (input->isKeyDown(sf::Keyboard::Delete)) {
-        // Sort selected indices in descending order to safely delete multiple tiles without invalidating indices
-        std::vector<int> sortedIndices(selectedTileIndices.begin(), selectedTileIndices.end());
-        std::sort(sortedIndices.rbegin(), sortedIndices.rend()); // Reverse sort
-
-        for (int index : sortedIndices) {
-            if (index >= 0 && index < tiles.size()) {
-                world->RemoveGameObject(*tiles[index]);
-                tiles.erase(tiles.begin() + index);
+                input->setKeyUp(sf::Keyboard::D); // Prevent continuous duplication while the key is held down
             }
         }
-        selectedTileIndices.clear(); // Clear selection after deletion
-        input->setKeyUp(sf::Keyboard::Delete); // Prevent continuous deletion while the key is held down
+
+        //Deletion
+        if (input->isKeyDown(sf::Keyboard::Delete)) {
+            // Sort selected indices in descending order to safely delete multiple tiles without invalidating indices
+            std::vector<int> sortedIndices(selectedTileIndices.begin(), selectedTileIndices.end());
+            std::sort(sortedIndices.rbegin(), sortedIndices.rend()); // Reverse sort
+
+            for (int index : sortedIndices) {
+                if (index >= 0 && index < tiles.size()) {
+                    world->RemoveGameObject(*tiles[index]);
+                    tiles.erase(tiles.begin() + index);
+                }
+            }
+            selectedTileIndices.clear(); // Clear selection after deletion
+            input->setKeyUp(sf::Keyboard::Delete); // Prevent continuous deletion while the key is held down
+        }
+   }
+    else
+    {
+        //Adding new lights 
+        if (input->isLeftMousePressed())
+        {
+            if (selectedLight == nullptr)  // No light is selected, so create a new one
+            {
+                auto l = std::make_unique<candle::RadialLight>();
+                l->setRange(500);
+                l->setFade(true);
+                l->setBeamAngle(50);
+                l->setColor(sf::Color::White);
+                l->setPosition(sf::Vector2f(worldPos.x, worldPos.y));
+                selectedLight = l.get();  // Keep the raw pointer of the newly created light
+                lights.push_back(std::move(l));  // Add to lights vector
+            }
+            else  // A light is already selected, so deselect it (ready to create another light)
+            {
+                selectedLight = nullptr;
+            }
+        }
+
+        if (selectedLight != nullptr)  // Edit the selected light if one exists
+        {
+            // Handle mouse wheel zoom inputs
+            int wheelDelta = input->getMouseWheelDelta();
+            if (wheelDelta != 0) {
+                float zoomFactor = wheelDelta > 0 ? 0.9f : 1.1f;  // More significant zoom change per scroll
+                float zoomAdjustment = pow(zoomFactor, abs(wheelDelta));  // Apply the factor power of scroll intensity
+                CurrentLightRange *= zoomAdjustment;
+            }
+
+            // Beam ANGLE
+            if (input->isKeyDown(sf::Keyboard::A))
+            {
+                CurrentLightAngle += (50 * dt);
+            }
+            if (input->isKeyDown(sf::Keyboard::D))
+            {
+                CurrentLightAngle -= (50 * dt);
+            }
+
+            // Beam Rotation
+            if (input->isKeyDown(sf::Keyboard::W))
+            {
+                CurrentLightRotation += (50 * dt);
+            }
+            if (input->isKeyDown(sf::Keyboard::S))
+            {
+                CurrentLightRotation -= (50 * dt);
+            }
+
+            // Apply changes to the selected light
+            selectedLight->setBeamAngle(CurrentLightAngle);
+            selectedLight->setRange(CurrentLightRange);
+            selectedLight->setRotation(CurrentLightRotation);
+            Output("Current Light Angle: %f\n", CurrentLightAngle);
+
+        }
+
+        //Adding New lighting Area 
+        if (input->isRightMousePressed())
+        {
+            if (selectedArea == nullptr)  // No area is selected, so create a new one
+            {
+                auto area = std::make_unique<candle::LightingArea>(candle::LightingArea::AMBIENT,
+                    sf::Vector2f(worldPos.x, worldPos.y),
+                    sf::Vector2f(100.f, 100.f));  // Initial size
+                area->setAreaColor(sf::Color::Red);
+                area->setAreaOpacity(0.5f);
+                selectedArea = area.get();  // Keep a raw pointer to the new area
+                areas.push_back(std::move(area));  // Add the area to the areas vector
+            }
+            else  // Deselect the current area, allowing a new one to be created next time
+            {
+                selectedArea = nullptr;
+            }
+        }
+
+        // Edit the selected lighting area if one exists
+        if (selectedArea != nullptr)
+        {
+            // Adjust position with WASD keys
+            if (input->isKeyDown(sf::Keyboard::W))
+            {
+                selectedArea->setPosition(selectedArea->getPosition() + sf::Vector2f(0.f, -100.f * dt));
+            }
+            if (input->isKeyDown(sf::Keyboard::S))
+            {
+                selectedArea->setPosition(selectedArea->getPosition() + sf::Vector2f(0.f, 100.f * dt));
+            }
+            if (input->isKeyDown(sf::Keyboard::A))
+            {
+                selectedArea->setPosition(selectedArea->getPosition() + sf::Vector2f(-100.f * dt, 0.f));
+            }
+            if (input->isKeyDown(sf::Keyboard::D))
+            {
+                selectedArea->setPosition(selectedArea->getPosition() + sf::Vector2f(100.f * dt, 0.f));
+            }
+
+            // Adjust size with IJKL keys
+            sf::Vector2f currentSize = selectedArea->getScale();
+            if (input->isKeyDown(sf::Keyboard::I))
+            {
+                currentSize.y -= 5.f * dt;  // Decrease height
+            }
+            if (input->isKeyDown(sf::Keyboard::K))
+            {
+                currentSize.y += 5.f * dt;  // Increase height
+            }
+            if (input->isKeyDown(sf::Keyboard::J))
+            {
+                currentSize.x -= 5.f * dt;  // Decrease width
+            }
+            if (input->isKeyDown(sf::Keyboard::L))
+            {
+                currentSize.x += 5.f * dt;  // Increase width
+            }
+            selectedArea->setScale(currentSize);
+        }
     }
 }
 
@@ -192,34 +321,6 @@ void TileManager::render(bool editMode) {
 
 }
 
-void TileManager::renderFog()
-{
-
-}
-
-void TileManager::renderLight()
-{
-}
-
-
-//
-//void TileManager::saveTiles(const std::vector<std::unique_ptr<Tiles>>& tiles, const std::string& filePath)
-//{
-//    std::cout << "Saving tiles to file: " << filePath << std::endl;
-//    std::ofstream file(filePath);
-//    for (const auto& tile : tiles) {
-//        file << tile->getTag() << ","
-//
-//            << tile->getPosition().x << ","
-//            << tile->getPosition().y << ","
-//            << tile->getSize().x << ","
-//            << tile->getSize().y << ","
-//            <<tile->getTrigger() << ","
-//            << tile->getStatic() << ","
-//            << tile->getMassless() << ","
-//            << tile->getTile() << ",""\n";
-//    }
-//}
 void TileManager::saveTiles(const std::vector<std::unique_ptr<Tiles>>& tiles, const std::string& filePath)
 {
     std::ofstream file(filePath);
@@ -290,11 +391,6 @@ bool TileManager::loadTiles()
 
 std::vector<std::unique_ptr<Tiles>>& TileManager::getTiles() {
     return tiles;
-}
-
-std::vector<std::unique_ptr<LightTile>>& TileManager::getLightTiles()
-{
-    return lights;
 }
 
 void TileManager::RemoveCollectable()
@@ -521,19 +617,22 @@ void TileManager::DrawImGui() {
                     saveTiles(tiles, filePath);
                 }
 
-                if (ImGui::Button("Add Light")) {
-                    addLight();
-                }
-
                 ImGui::EndTabItem();
 
                 
             }
 
             if (ImGui::BeginTabItem("Lights")) {
+                iseditingLights = true;
+
+                if (ImGui::Button("Add Light")) {
+                    addLight(sf::Vector2f(0, 0));
+                }
                 ImGui::Text("Work in Progress.....");
                 ImGui::EndTabItem();
             }
+            else
+                iseditingLights = false;
             ImGui::EndTabBar();
         }
 
@@ -727,14 +826,27 @@ void TileManager::addNewTile() {
     selectedTileIndices.insert(tiles.size() - 1);
 }
 
-void TileManager::addLight()
+void TileManager::addLight(sf::Vector2f position)
 {
-    auto newLight = std::make_unique<LightTile>();
-    newLight->setPosition(0, 0);
-    lights.push_back(std::move(newLight));
+    auto light = std::make_unique<candle::RadialLight>();
+    light->setRange(CurrentLightRange);
+    light->setFade(true);
+    light->setBeamAngle(CurrentLightAngle);
+    light->setColor(sf::Color::White);
+    light->setPosition(position);
+    selectedLight = light.get();
+    lights.push_back(std::move(light));
 }
 
-
+void TileManager::removeSelectedLight() {
+    if (selectedLight) {
+        lights.erase(std::remove_if(lights.begin(), lights.end(),
+            [&](const std::unique_ptr<candle::RadialLight>& l) {
+                return l.get() == selectedLight;
+            }), lights.end());
+        selectedLight = nullptr;
+    }
+}
 
 void TileManager::deleteSelectedTiles() {
     std::vector<int> sortedIndices(selectedTileIndices.begin(), selectedTileIndices.end());
@@ -746,6 +858,48 @@ void TileManager::deleteSelectedTiles() {
     selectedTileIndices.clear();
 }
 
+
+void TileManager::updateLighting() {
+    // Clear and redraw fog
+    fog.clear();
+    for (auto& lightPtr : lights) {
+        fog.draw(*lightPtr);
+    }
+    fog.display();
+
+    // Update each lighting area
+    for (auto& areaPtr : areas) {
+        areaPtr->clear();
+        for (auto& lightPtr : lights) {
+            areaPtr->draw(*lightPtr);
+        }
+        areaPtr->display();
+    }
+
+}
+
+void TileManager::renderLighting()
+{
+    if (iseditingLights)
+    {
+        for (auto& lightPtr : lights)
+        {
+            lightPtr->castLight(edges.begin(), edges.end());
+        }
+
+        for (auto& lightPtr : lights)
+        {
+            window->draw(*lightPtr);
+        }
+
+        for (auto& areaPtr : areas)
+        {
+            window->draw(*areaPtr);
+        }
+
+        window->draw(fog);
+    }
+}
 
 
 

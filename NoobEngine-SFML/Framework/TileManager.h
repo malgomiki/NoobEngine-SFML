@@ -9,6 +9,7 @@
 #include <string>
 #include <sstream> // This is required for std::stringstream
 #include <set>     // For selecting multiple tiles
+#include "candle.hpp"
 
 class TileManager : public GameObject
 {
@@ -16,11 +17,38 @@ class TileManager : public GameObject
     bool recentlyCleared = false; // Used to prevent multiple tiles from being selected at once
     int activeTileIndex = -1; // -1 indicates no tile is actively being edited
     bool tilesLoaded = false;
-    //std::vector<Tiles> tiles;
 
     std::vector<std::unique_ptr<Tiles>> tiles;
-    std::vector<std::unique_ptr<LightTile>> lights;
     
+    //Lighting Test 
+    // create a light source
+    std::vector<std::unique_ptr<candle::RadialLight>> lights;
+    candle::RadialLight* selectedLight = nullptr;
+
+    std::vector<std::unique_ptr<candle::LightingArea>> areas;
+    candle::LightingArea* selectedArea = nullptr;
+
+
+    //This is like a canvas, without this I cannot draw any lights onto the screen. 
+    //I dont know if I want to keep adding additional Lighting area, casue the same effect can
+    //achieved by using different light colors. Maybe not 
+    candle::LightingArea fog;
+
+    //Creating Edgevector, this is for shadows, but I am not planning on using this 
+    //Maybe in the future when i want objects to caste shadows thats when I will use this 
+    //Also you need this to actually caste light.
+    //Its empty for now. 
+    candle::EdgeVector edges;
+
+    //Testing Values, this can be changed via imgui editor. 
+    float CurrentLightRange = 500.f;
+    float CurrentLightAngle = 50.f;
+    float CurrentLightRotation = 50.f;
+
+
+    //Only edit lights if handleInput is disabled 
+    bool iseditingLights;
+
     TextureManager textureManager;
 
     std::string filePath; // File to store tile data
@@ -31,7 +59,6 @@ class TileManager : public GameObject
     bool showDebugCollisionBox;
 
     //ImGui variables
-    bool stuff;
     float imguiWidth;
     float imguiHeight;
     bool inputTextActive;
@@ -39,10 +66,11 @@ class TileManager : public GameObject
 public:
     TileManager();
 
-    //Lights 
-    void addLight();
-    void renderFog();
-    void renderLight();
+    //Lighting Test 
+    void addLight(sf::Vector2f position);
+    void removeSelectedLight();
+    void updateLighting();
+    void renderLighting();
 
     void update(float dt) override;
     void handleInput(float dt) override;
@@ -52,8 +80,6 @@ public:
     bool loadTiles();
 
     std::vector<std::unique_ptr<Tiles>>& getTiles();
-
-    std::vector<std::unique_ptr<LightTile>>& getLightTiles();
 
     void setWorld(World* world) { this->world = world; }
     void setView(sf::View* view) { this->view = view; }

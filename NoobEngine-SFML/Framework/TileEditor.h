@@ -1,10 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Framework/BaseLevel.h"
-#include "Framework/Input.h"
-#include "Framework/GameState.h"
-#include "Framework/World.h"
-#include "Framework/TileManager.h"
+#include "BaseLevel.h"
+#include "Input.h"
+#include "GameState.h"
+#include "World.h"
+#include "TileManager.h"
 #include <string>
 #include <iostream>
 
@@ -18,6 +18,7 @@ public:
 	void update(float dt);
 	void render();
 	void moveView(float dt);
+	TileManager* getTileManager() { return tileManager; }
 private:
 	// Default variables for level class.
 	sf::RenderWindow* window;
@@ -37,6 +38,7 @@ private:
 	bool isDragging = false;
 	sf::Texture mouseCurosorTex;
 	sf::Sprite mouseCurosorGrab;
+
 
 };
 
