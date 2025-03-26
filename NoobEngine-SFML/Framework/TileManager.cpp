@@ -625,8 +625,87 @@ void TileManager::DrawImGui() {
             if (ImGui::BeginTabItem("Lights")) {
                 iseditingLights = true;
 
-                if (ImGui::Button("Add Light")) {
-                    addLight(sf::Vector2f(0, 0));
+                if (ImGui::BeginListBox("Lights List", ImVec2(200, 300))) {
+                    for (size_t i = 0; i < lights.size(); i++) {
+                        std::string item_label = "Light " + std::to_string(i) + "##" + std::to_string(i);
+
+                        bool isSelected = (selectedLight == lights[i].get());
+                        if (ImGui::Selectable(item_label.c_str(), isSelected)) {
+                            if (ImGui::GetIO().KeyCtrl) {
+                                // Toggle selection with Ctrl
+                                if (isSelected) {
+                                    selectedLight = nullptr;
+                                }
+                                else {
+                                    selectedLight = lights[i].get();
+                                }
+                            }
+                            else {
+                                // Single selection
+                                selectedLight = lights[i].get();
+                            }
+                        }
+                    }
+ 
+
+                    ImGui::EndListBox();
+                }
+                // Only show the color selection if a light is selected
+                if (selectedLight) {
+                    static const char* colorNames[] = { "Black", "White", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan", "Transparent" };
+                    static sf::Color colorValues[] = { sf::Color::Black, sf::Color::White, sf::Color::Red, sf::Color::Green,
+                                                       sf::Color::Blue, sf::Color::Yellow, sf::Color::Magenta, sf::Color::Cyan, sf::Color::Transparent };
+
+                    static int currentColorIndex = 0;
+
+                    // Find current color index
+                    for (int i = 0; i < IM_ARRAYSIZE(colorValues); i++) {
+                        if (selectedLight->getColor() == colorValues[i]) {
+                            currentColorIndex = i;
+                            break;
+                        }
+                    }
+
+                    if (ImGui::BeginCombo("Light Color", colorNames[currentColorIndex])) {
+                        for (int i = 0; i < IM_ARRAYSIZE(colorNames); i++) {
+                            bool isSelected = (currentColorIndex == i);
+                            if (ImGui::Selectable(colorNames[i], isSelected)) {
+                                currentColorIndex = i;
+                                selectedLight->setColor(colorValues[i]);  // Update light color
+
+                                if (isSelected) {
+                                    ImGui::SetItemDefaultFocus();
+                                }
+                            }
+                        }
+                        ImGui::EndCombo();
+                    }
+                }
+                if (selectedLight) {
+                    sf::Vector2f position = selectedLight->getPosition();
+                    float range = selectedLight->getRange();
+                    float angle = selectedLight->getBeamAngle();
+                    float rotation = selectedLight->getRotation();
+
+                    // Position DragFloat2
+                    if (ImGui::DragFloat2("Position", &position.x, 0.5f, 0.0f, 10000.0f, "%.3f")) {
+                        selectedLight->setPosition(position);
+                    }
+
+                    // Range DragFloat
+                    if (ImGui::DragFloat("Range", &range, 1.0f, 10.0f, 1000.0f, "%.1f")) {
+                        selectedLight->setRange(range);
+                    }
+
+                    // Beam Angle DragFloat
+                    if (ImGui::DragFloat("Beam Angle", &angle, 1.0f, 0.0f, 180.0f, "%.1f")) {
+                        selectedLight->setBeamAngle(angle);
+                    }
+
+                    // Rotation DragFloat
+                    if (ImGui::DragFloat("Rotation", &rotation, 1.0f, -360.0f, 360.0f, "%.1f")) {
+                        selectedLight->setRotation(rotation);
+                    }
                 }
                 ImGui::Text("Work in Progress.....");
                 ImGui::EndTabItem();
@@ -867,14 +946,14 @@ void TileManager::updateLighting() {
     }
     fog.display();
 
-    // Update each lighting area
-    for (auto& areaPtr : areas) {
-        areaPtr->clear();
-        for (auto& lightPtr : lights) {
-            areaPtr->draw(*lightPtr);
-        }
-        areaPtr->display();
-    }
+    //// Update each lighting area
+    //for (auto& areaPtr : areas) {
+    //    areaPtr->clear();
+    //    for (auto& lightPtr : lights) {
+    //        areaPtr->draw(*lightPtr);
+    //    }
+    //    areaPtr->display();
+    //}
 
 }
 
@@ -892,10 +971,10 @@ void TileManager::renderLighting()
             window->draw(*lightPtr);
         }
 
-        for (auto& areaPtr : areas)
-        {
-            window->draw(*areaPtr);
-        }
+        //for (auto& areaPtr : areas)
+        //{
+        //    window->draw(*areaPtr);
+        //}
 
         window->draw(fog);
     }
