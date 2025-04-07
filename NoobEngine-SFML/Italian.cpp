@@ -4,7 +4,7 @@ Italian::Italian()
 {
 	italianSPRSH.loadFromFile("gfx/MarioSheetT.png");
 	setSize(sf::Vector2f(15 * 4, 21 * 4));
-	setPosition(350, 100);
+	setPosition(450, 500);
 	setTexture(&italianSPRSH);
 
 	Walk.addFrame(sf::IntRect(0, 0, 15, 21));
@@ -21,6 +21,8 @@ Italian::Italian()
 	Duck.addFrame(sf::IntRect(0, 44, 17, 17));
 	Duck.setFrameSpeed(1.f / 2.f);
 	curAni = &Walk;
+
+	setTag("Player");
 }
 
 Italian::~Italian()
@@ -54,6 +56,7 @@ void Italian::handleInput(float dt)
 	}
 	if (input->isKeyDown(sf::Keyboard::Space)) {
 		Jump(160.f);
+		audio->playSoundbyName("jump");
 	}
 	curAni->animate(dt);
 }

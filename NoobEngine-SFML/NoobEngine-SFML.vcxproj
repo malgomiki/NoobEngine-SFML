@@ -136,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="Candle\Color.cpp" />
     <ClCompile Include="Candle\Constants.cpp" />
     <ClCompile Include="Candle\DirectedLight.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Background.h" />
     <ClInclude Include="Candle\Candle.hpp" />
     <ClInclude Include="Candle\Color.hpp" />
     <ClInclude Include="Candle\Constants.hpp" />

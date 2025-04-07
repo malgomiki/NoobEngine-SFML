@@ -5,7 +5,7 @@ Zombie::Zombie()
 	ZombieTex.loadFromFile("gfx/animZombie.png");
 	setSize(sf::Vector2f(55, 108));
 
-	setPosition(300, 100);
+	setPosition(400, 500);
 
 	setTexture(&ZombieTex);
 	// Setup walk animation.

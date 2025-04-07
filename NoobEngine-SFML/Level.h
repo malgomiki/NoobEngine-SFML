@@ -11,6 +11,7 @@
 #include <iostream>
 #include "Zombie.h"
 #include "Italian.h"
+#include "Background.h"
 
 class Level : public BaseLevel{
 public:
@@ -25,4 +26,5 @@ private:
 	// Default variables for level class.
 	Zombie zomb;
 	Italian mario;
+	Background bg;
 };
